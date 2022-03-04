@@ -12,19 +12,31 @@ func check(e error) {
 }
 
 func main() {
-	scanFile(os.Args[1])
+	scanFile("test")
 }
 
 func scanFile(path string) {
+
+	counterSlice := make([]int, 256)
+
 	f, err := os.Open(path)
 	check(err)
 
-	currSymbol := make([]byte, 8)
-	prevSymbol := make([]byte, 8)
+	currSymbol := make([]byte, 1)
+	// prevSymbol := make([]byte, 1)
 
-	f.Read(currSymbol)
-	f.Read(prevSymbol)
+	for {
+		control, _ := f.Read(currSymbol)
+		if control == 0 {
+			break
+		}
+		counterSlice[currSymbol[0]]++
+		fmt.Println((currSymbol))
+	}
 
-	fmt.Println(string(currSymbol))
-	fmt.Println(string(prevSymbol))
+	// f.Read(prevSymbol)
+
+	// fmt.Println((prevSymbol))
+
+	defer f.Close()
 }
