@@ -12,12 +12,14 @@ func check(e error) {
 }
 
 func main() {
-	scanFile("test")
+	scanFile(os.Args[1])
 }
 
 func scanFile(path string) {
 
 	counterSlice := make([]int, 256)
+	probs1 := make([]float64, 256)
+	counter := 0
 
 	f, err := os.Open(path)
 	check(err)
@@ -30,12 +32,17 @@ func scanFile(path string) {
 		if control == 0 {
 			break
 		}
+		counter++
 		counterSlice[currSymbol[0]]++
-		fmt.Println((currSymbol))
+		// fmt.Println((currSymbol))
 	}
 
-	// f.Read(prevSymbol)
+	for i, k := range counterSlice {
+		probs1[i] = float64(k) / float64(counter)
+	}
 
+	fmt.Println(counterSlice)
+	fmt.Println(probs1)
 	// fmt.Println((prevSymbol))
 
 	defer f.Close()
